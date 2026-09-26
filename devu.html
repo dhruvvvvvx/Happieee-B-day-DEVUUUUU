@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Devu! 💖 - My Whole Universe</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Great+Vibes&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        velvet: {
+                            800: '#58111A',
+                            900: '#380B10',
+                            950: '#1F0407',
+                        },
+                        crimson: {
+                            400: '#FF4D6D',
+                            500: '#E60039',
+                            600: '#C70039',
+                            700: '#900C3F',
+                            800: '#580018',
+                        },
+                        blush: {
+                            50: '#FFF0F5',
+                            100: '#FFE4E1',
+                            200: '#FFB6C1',
+                            300: '#FF91A4',
+                            400: '#FF69B4',
+                        },
+                        rosegold: {
+                            300: '#F7C59F',
+                            400: '#E8A598',
+                            500: '#D48C84',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        cursive: ['Great Vibes', 'cursive'],
+                        handwriting: ['Caveat', 'cursive'],
+                        sans: ['Inter', 'sans-serif'],
+                        cinzel: ['Cinzel', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            background: radial-gradient(circle at 50% 30%, #580018 0%, #2b030b 50%, #120104 100%);
+            color: #ffe4e1;
+            touch-action: manipulation;
+        }
+
+        .font-cursive { font-family: 'Great Vibes', cursive; }
+        .font-handwriting { font-family: 'Caveat', cursive; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-cinzel { font-family: 'Cinzel', serif; }
+
+        /* Glassmorphism styling with lush crimson border & deep dark backdrop */
+        .glass-card-dark {
+            background: rgba(35, 5, 12, 0.85);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border: 1px solid rgba(255, 105, 180, 0.35);
+            box-shadow: 0 15px 50px 0 rgba(0, 0, 0, 0.85), inset 0 0 25px rgba(230, 0, 57, 0.2);
+        }
+
+        /* Slide Transitions */
+        .slide {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: scale(0.95) translateY(25px);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1) translateY(0);
+            z-index: 10;
+            pointer-events: auto;
+        }
+
+        /* Glowing Effects */
+        .glow-text {
+            text-shadow: 0 0 15px rgba(255, 105, 180, 0.85), 0 0 30px rgba(230, 0, 57, 0.6);
+        }
+        .glow-rosegold {
+            text-shadow: 0 0 15px rgba(247, 197, 159, 0.8);
+        }
+
+        /* Animations */
+        @keyframes heartPulse {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.18); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.18); }
+            70% { transform: scale(1); }
+        }
+        .animate-heart { animation: heartPulse 2.3s infinite; }
+
+        @keyframes flameFlicker {
+            0%, 100% { transform: scale(1) rotate(-1deg); opacity: 0.9; }
+            50% { transform: scale(1.15) rotate(1deg); opacity: 1; filter: drop-shadow(0 0 12px #ffe4e1); }
+        }
+        .flame-anim { animation: flameFlicker 0.6s infinite alternate; }
+
+        #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Single Click Floating Emoji Effect */
+        .cursor-emoji {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            font-size: 2rem;
+            animation: floatUpAndFade 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            filter: drop-shadow(0 0 12px rgba(255, 105, 180, 0.9));
+            user-select: none;
+        }
+
+        @keyframes floatUpAndFade {
+            0% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(0.5) rotate(0deg);
+            }
+            50% {
+                opacity: 0.95;
+                transform: translate(calc(-50% + var(--dx)), calc(-50% - 50px)) scale(1.4) rotate(var(--rot));
+            }
+            100% {
+                opacity: 0;
+                transform: translate(calc(-50% + var(--dx) * 1.5), calc(-50% - 100px)) scale(0.8) rotate(calc(var(--rot) * 1.5));
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(88, 0, 24, 0.2); }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 105, 180, 0.5); border-radius: 10px; }
+
+        /* Photo Frame Hover */
+        .photo-frame {
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 105, 180, 0.3);
+        }
+        .photo-frame:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 20px 40px -10px rgba(255, 105, 180, 0.6);
+        }
+    </style>
+</head>
+<body class="relative min-h-screen select-none overflow-hidden bg-gradient-to-br from-velvet-950 via-crimson-800 to-black text-blush-100">
+
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- Background Ambient Glows -->
+    <div class="fixed top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-crimson-600/30 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="fixed bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-96 h-96 bg-blush-400/20 rounded-full blur-3xl pointer-events-none"></div>
+
+    <!-- Header Navigation Bar -->
+    <header class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4 md:px-8 bg-velvet-950/70 backdrop-blur-md border-b border-blush-400/20">
+        <div class="flex items-center space-x-2">
+            <span class="text-2xl font-cursive text-blush-200 glow-text">Devu & Me</span>
+            <span class="text-xs px-2.5 py-0.5 rounded-full bg-crimson-600/30 text-blush-200 border border-blush-400/40">Birthday Edition 💖</span>
+        </div>
+
+        <!-- Audio Player Widget -->
+        <div class="flex items-center space-x-3 bg-velvet-900/80 px-4 py-1.5 rounded-full border border-blush-400/30 shadow-lg">
+            <audio id="bgMusic" loop preload="auto">
+                <source src="song.mp3" type="audio/mpeg">
+            </audio>
+            <div id="musicBars" class="flex items-center space-x-1 h-4">
+                <span class="w-1 bg-blush-300 h-2 rounded-full transition-all duration-300"></span>
+                <span class="w-1 bg-blush-300 h-4 rounded-full transition-all duration-300"></span>
+                <span class="w-1 bg-blush-300 h-1 rounded-full transition-all duration-300"></span>
+                <span class="w-1 bg-blush-300 h-3 rounded-full transition-all duration-300"></span>
+            </div>
+            <button id="musicToggle" class="text-blush-100 hover:text-white transition-colors text-xs font-semibold flex items-center gap-1.5">
+                <i class="fas fa-music text-xs text-blush-300"></i>
+                <span id="musicStatusText">Play Music</span>
+            </button>
+        </div>
+    </header>
+
+    <main id="slideDeck" class="relative z-10 w-full h-screen pt-16 pb-20 flex items-center justify-center px-4 md:px-8">
+
+        <!-- ==================== SLIDE 1: Grand Welcome & Birthday Prelude ==================== -->
+        <section class="slide active" data-slide="1">
+            <div class="max-w-3xl w-full text-center space-y-6 glass-card-dark p-6 md:p-10 rounded-3xl relative overflow-hidden">
+                <div class="inline-block p-3 rounded-full bg-crimson-600/20 border border-blush-400/40 text-blush-200 mb-1">
+                    <i class="fas fa-crown text-3xl animate-heart"></i>
+                </div>
+                
+                <h1 class="text-4xl md:text-6xl font-cursive text-blush-200 glow-text leading-tight">
+                    Happy Birthday, My Devuuuuuu! 🎂💖✨
+                </h1>
+                
+                <p class="font-handwriting text-2xl md:text-3xl text-blush-200">
+                    To my babieeeeee, my kuchuuuu puchuuuu, my whole universe...
+                </p>
+
+                <div class="text-sm md:text-base text-blush-100/95 leading-relaxed space-y-4 font-serif italic max-w-2xl mx-auto">
+                    <p>
+                        "Before you walked into my world, life was just an empty, quiet background. You arrived like a dream I never knew my heart was waiting for, painting every single day with your laughter, your sweetness, and your pure soul."
+                    </p>
+                    <p class="text-blush-200 font-sans not-italic text-sm">
+                        Today is the most sacred day because the love of my life was born. I built this 14-page story so we can hold hands and retrace every milestone, every touch, every secret confession, and every single kiss that brought us here.
+                    </p>
+                </div>
+
+                <!-- Interactive Letter Reveal -->
+                <div class="pt-2">
+                    <button onclick="toggleLetter('letter1')" class="px-6 py-2.5 bg-gradient-to-r from-crimson-600/60 to-blush-400/60 hover:from-crimson-600/80 hover:to-blush-400/80 text-white rounded-full border border-blush-300/40 text-xs font-semibold transition-all shadow-lg flex items-center gap-2 mx-auto">
+                        <i class="fas fa-envelope-open-text text-blush-200"></i>
+                        <span>Open My Birthday Prelude Note 💌</span>
+                    </button>
+                    <div id="letter1" class="hidden mt-4 p-4 bg-velvet-950/90 rounded-2xl border border-blush-400/40 text-left text-xs font-serif text-blush-100 leading-relaxed space-y-2">
+                        <p class="font-handwriting text-xl text-blush-300">My dearest Devanshi,</p>
+                        <p>No dictionary will ever contain enough words to explain what you mean to me. You are my safe haven, my peace, and my greatest miracle. Happy Birthday, my sunshine! Step inside our story...</p>
+                    </div>
+                </div>
+
+                <div class="pt-4 flex items-center justify-center">
+                    <button onclick="nextSlide()" class="px-8 py-3.5 bg-gradient-to-r from-crimson-600 via-blush-400 to-crimson-600 hover:brightness-110 text-white font-semibold rounded-full shadow-lg shadow-crimson-800/60 transition-all transform hover:scale-105 flex items-center justify-center gap-2">
+                        <span>Begin Our Story (14 Pages)</span>
+                        <i class="fas fa-heart text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SLIDE 2: The Unplanned Beginning ==================== -->
+        <section class="slide" data-slide="2">
+            <div class="max-w-4xl w-full glass-card-dark p-6 md:p-10 rounded-3xl grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="space-y-4">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-crimson-600/30 text-blush-200 text-xs font-semibold border border-blush-400/30">
+                        <i class="far font-bold fa-calendar-alt"></i> September 2025
+                    </div>
+                    <h2 class="text-3xl md:text-4xl font-serif text-blush-200">The Unintentional Spark</h2>
+                    <p class="text-xs md:text-sm text-blush-100/90 leading-relaxed">
+                        It all started on <span class="text-blush-300 font-semibold">24th September 2025</span> when I randomly messaged you regarding a college query. Then on <span class="text-blush-300 font-semibold">29th September</span>, I reached out once again.
+                    </p>
+                    <p class="text-xs md:text-sm text-blush-200/90 leading-relaxed">
+                        You were so guarded, shy, and let's be real—a total cute "man-hater" back then! With strict rules at home, you were so cautious. Yet, even with dry, short replies, I found myself waiting endlessly for your notification every single day, secretly logging every tiny interaction with you in my heart.
+                    </p>
+                </div>
+                <div class="bg-velvet-900/60 p-6 rounded-2xl border border-blush-400/30 text-center space-y-4 relative overflow-hidden">
+                    <div class="text-5xl text-blush-300"><i class="fas fa-comments"></i></div>
+                    <h3 class="font-handwriting text-2xl text-blush-200">"I waited for your texts endlessly..."</h3>
+                    <p class="text-xs text-blush-200/80 italic">
+                        Neither of us knew what destiny was crafting. We were just two classmates exchanging notes, unaware that we were writing chapter one of forever.
+                    </p>
+                    <div class="p-3 bg-crimson-800/30 rounded-xl border border-blush-400/20 text-left text-xs space-y-1">
+                        <p class="text-blush-300 font-semibold">📍 Chapter Logs:</p>
+                        <p>• 24 Sept: First academic text</p>
+                        <p>• 29 Sept: Second query & casual chat</p>
+                        <p>• Status: Dry replies, but my heart racing!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SLIDE 3: The Chocolate Promise (Image 1) ==================== -->
+        <section class="slide" data-slide="3">
+            <div class="max-w-4xl w-full glass-card-dark p-6 md:p-10 rounded-3xl grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="flex justify-center">
+                    <div class="relative photo-frame rounded-2xl overflow-hidden border-4 border-blush-400/40 max-w-xs cursor-pointer" onclick="openModal('1.jpg', '17th October 2025 - Cadbury Chocolate Before Diwali Break')">
+                        <img src="1.jpg" alt="Chocolate before Diwali" class="w-full h-80 object-cover hover:scale-105 transition-transform duration-500">
+                        <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-3 text-center">
+                            <span class="text-xs text-blush-200 font-medium"><i class="fas fa-search-plus mr-1"></i> Tap to enlarge</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-crimson-600/30 text-blush-200 text-xs font-semibold border border-blush-400/30">
+                        <i class="fas fa-calendar-day"></i> 17th October 2025
+                    </div>
+                    <h2 class="text-3xl font-serif text-blush-200">The Pre-Diwali Farewell</h2>
+                    <p class="text-xs md:text-sm text-blush-100/90 leading-relaxed">
+                        It was the last day before our 3-week Diwali vacation. Knowing the strict environment and restrictions at your home, we knew we wouldn't be able to text or call during those long weeks.
+                    </p>
+                    <p class="text-xs md:text-sm text-blush-200/90 leading-relaxed">
+                        I handed you this Cadbury Dairy Milk chocolate. It wasn't just a sweet treat—it was my silent promise of affection, wishing you warmth during those 21 long days where I knew I'd miss your presence deeply every single second.
+                    </p>
+                    <div class="p-4 bg-crimson-800/30 border border-blush-400/30 rounded-xl font-handwriting text-xl text-blush-200">
+                        "Three weeks without your texts felt like three endless ages..."
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SLIDE 4: A Handmade Rose & Best Friends (Image 2) ==================== -->
+        <section class="slide" data-slide="4">
+            <div class="max-w-4xl w-full glass-card-dark p-6 md:p-10 rounded-3xl grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="space-y-4 order-2 md:order-1">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-crimson-600/30 text-blush-200 text-xs font-semibold border border-blush-400/30">
+                        <i class="fas fa-seedling"></i> Late 2025
+                    </div>
+                    <h2 class="text-3xl font-serif text-blush-200">"Will You Be My Best Friend?"</h2>
+                    <p class="text-xs md:text-sm text-blush-100/90 leading-relaxed">
+                        Sometime between October and December 2025, I carefully crafted this handmade bouquet of red paper roses for you with so much warmth and dedication.
+                    </p>
+                    <p class="text-xs md:text-sm text-blush-200/90 leading-relaxed">
+                        I officially asked you to be my best friend. Seeing your eyes brighten and that cute smile light up your face as you accepted those paper flowers was pure happiness. Every petal was folded with genuine devotion.
+                    </p>
+                    <div class="p-3 bg-velvet-900/60 rounded-xl border border-blush-400/30 text-xs text-blush-200 flex items-center gap-3">
+                        <i class="fas fa-heart text-xl text-blush-300"></i>
+                        <span>Paper roses that never fade, just like my growing love for you babieeeeee.</span>
+                    </div>
+                </div>
+                <div class="flex justify-center order-1 md:order-2">
+                    <div class="relative photo-frame rounded-2xl overflow-hidden border-4 border-blush-400/40 max-w-xs cursor-pointer" onclick="openModal('2.jpg', 'Handmade Paper Rose Bouquet Given to Devu')">
+                        <img src="2.jpg" alt="Paper Rose Bouquet" class="w-full h-80 object-cover hover:scale-105 transition-transform duration-500">
+                        <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-3 text-center">
+                            <span class="text-xs text-blush-200 font-medium"><i class="fas fa-search-plus mr-1"></i> Tap to enlarge</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SLIDE 5: The Secret Diary & Growing Feelings ==================== -->
+        <section class="slide" data-slide="5">
+            <div class="max-w-3xl w-full glass-card-dark p-6 md:p-8 rounded-3xl space-y-6 text-center">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-crimson-600/30 text-blush-200 text-xs font-semibold border border-blush-400/30">
+                    <i class="fas fa-book-heart"></i> Unexpected Storms & Hidden Feelings
+                </div>
+                <h2 class="text-3xl md:text-4xl font-serif text-blush-200">The Fight & The Sacred Diary</h2>
+                
+                <p class="text-xs md:text-sm text-blush-100/90 leading-relaxed max-w-2xl mx-auto">
+                    We once had a severe fight that almost pulled us apart for 3 painful days. But destiny wouldn't let us go. When your family grew suspicious, you handed me your private diary, trusting me with it while saying, <span class="italic text-blush-200 font-serif">"Please never read it!"</span>
+                </p>
+
+                <!-- Interactive Secret Note Reveal -->
+                <div class="my-4">
+                    <div id="diaryEnvelope" onclick="revealDiarySecret()" class="p-6 bg-gradient-to-r from-velvet-900/80 to-crimson-800/80 border-2 border-dashed border-blush-400/50 rounded-2xl cursor-pointer hover:border-blush-300 transition-all transform hover:scale-[1.02]">
+                        <div id="diaryPrompt" class="space-y-2">
+                            <i class="fas fa-envelope-open-text text-4xl text-blush-300 animate-bounce"></i>
+                            <p class="font-handwriting text-2xl text-blush-200">Tap to peek into what was written in her diary...</p>
+                            <span class="text-xs text-blush-200 bg-velvet-950 px-3 py-1 rounded-full border border-blush-400/30">Click to unfold diary secret</span>
+                        </div>
+                        <div id="diaryContent" class="hidden text-left space-y-3 font-serif text-xs md:text-sm text-blush-100">
+                            <p class="text-blush-300 font-handwriting text-2xl border-b border-blush-400/30 pb-2">
+                                📖 What I discovered in your diary after holding back for a month:
+                            </p>
+                            <p>
+                                You had written that during our last meet, you felt a deep wish to hug me... and that maybe, just maybe, you had started liking me too.
+                            </p>
+                            <p class="italic text-xs text-blush-200">
+                                Reading that tiny spark hidden in your written words made my heart explode with happiness. That was the exact second I knew our souls belonged together.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SLIDE 6: The Magic College Night & PPT Surprise ==================== -->
+        <section class="slide" data-slide="6">
+            <div class="max-w-4xl w-full glass-card-dark p-6 md:p-8 rounded-3xl space-y-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-blush-400/20 pb-4">
+                    <div>
+                        <span class="text-xs text-blush-300 font-semibold uppercase tracking-wider">The Turning Point</span>
+                        <h2 class="text-2xl md:text-3xl font-serif text-blush-200">The College Event Night</h2>
+                    </div>
+                    <span class="text-xs px-3 py-1 bg-crimson-600/30 text-blush-200 rounded-full border border-blush-400/30 mt-2 md:mt-0 w-max">
+                        <i class="fas fa-magic mr-1"></i> Destined Glitch
+                    </span>
+                </div>
+
+                <p class="text-xs md:text-sm text-blush-100/90 leading-relaxed">
+                    We attended the college night event together as a duo. I had prepared a cute PPT presentation on my phone for you with sweet memories, ending with a slide asking: <span class="text-blush-200 font-semibold italic">"Can we hug please?"</span>
+                </p>
+
+                <div class="p-4 bg-velvet-900/80 rounded-2xl border border-blush-400/30 text-xs md:text-sm text-blush-100 leading-relaxed space-y-3">
+                    <p>
+                        I got so nervous at the last second and tried to skip that slide... but <strong class="text-blush-300">destiny intervened</strong>! A sudden glitch on my phone jumped straight to that final slide.
+                    </p>
+                    <p>
+                        You saw it, smiled softly, and under the starry night sky, we held hands tightly, shared our very first warm, breathless embrace, and I kissed your cheek for the first time. Wrapping my arm gently around your waist felt like pure magic.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SLIDE 7: Our Second Day of Magic (Images 6 & 7) ==================== -->
+        <section class="slide" data-slide="7">
+            <div class="max-w-4xl w-full glass-card-dark p-6 md:p-8 rounded-3xl space-y-6">
+                <div class="text-center space-y-2">
+                    <span class="text-xs text-blush-300 font-semibold uppercase tracking-wider">The Morning After</span>
+                    <h2 class="text-3xl font-serif text-blush-200">Our Second Day of Magic</h2>
+                    <p class="text-xs md:text-sm text-blush-200/80">When every quiet corner in college became our romantic sanctuary.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="photo-frame rounded-xl overflow-hidden border-2 border-blush-400/40 cursor-pointer" onclick="openModal('6.jpg', 'Cute pink bows filter selfie')">
+                            <img src="6.jpg" alt="Sweet selfie 1" class="w-full h-52 object-cover">
+                        </div>
+                        <div class="photo-frame rounded-xl overflow-hidden border-2 border-blush-400/40 cursor-pointer" onclick="openModal('7.jpg', 'Mirror frame photo together')">
+                            <img src="7.jpg" alt="Sweet selfie 2" class="w-full h-52 object-cover">
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <p class="text-xs md:text-sm text-blush-100/90 leading-relaxed">
+                            After that magical night, everything between us transformed. Holding your soft hands and pulling you close in quiet campus corners became our cherished routine.
+                        </p>
+                        <p class="text-xs md:text-sm text-blush-200/90 leading-relaxed">
+                            Looking at these pictures, clicked right before I gave you those gentle cheek kisses, I remember thinking how incredibly blessed I was to have you smiling in my arms.
+                        </p>
+                        <div class="p-3 bg-crimson-800/30 rounded-xl border border-blush-400/30 text-xs text-blush-200 italic">
+                            "In your sweet embrace, I found the home my heart had searched for all my life."
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SLIDE 8: Growing Closer Every Second (Images 3 & 4) ==================== -->
+        <section class="slide" data-slide="8">
+            <div class="max-w-4xl w-full glass-card-dark p-6 md:p-8 rounded-3xl space-y-6">
+                <div class="text-center space-y-2">
+                    <span class="text-xs text-blush-300 font-semibold uppercase tracking-wider">Unforgettable College Moments</span>
+                    <h2 class="text-3xl font-serif text-blush-200">Growing Closer Every Second</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="photo-frame rounded-xl overflow-hidden border-2 border-blush-400/40 cursor-pointer" onclick="openModal('3.jpg', 'Sitting together under the trees in college')">
+                            <img src="3.jpg" alt="College tree scene" class="w-full h-52 object-cover">
+                        </div>
+                        <div class="photo-frame rounded-xl overflow-hidden border-2 border-blush-400/40 cursor-pointer" onclick="openModal('4.jpg', 'Dressed up together as a duo')">
+                            <img src="4.jpg" alt="Duo date photo" class="w-full h-52 object-cover">
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <p class="text-xs md:text-sm text-blush-100/90 leading-relaxed">
+                            Sitting together under the shade of college trees, holding hands under notebook covers so nobody would notice, sharing small snacks and endless laughter...
+                        </p>
+                        <p class="text-xs md:text-sm text-blush-200/90 leading-relaxed">
+                            Every single hour spent beside you felt like time stood still. With every passing day, the bond between us deepened into something far beyond friendship.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SLIDE 9: Looking Into Your Soul (Images 8 & 9) ==================== -->
+        <section class="slide" data-slide="9">
+            <div class="max-w-4xl w-full glass-card-dark p-6 md:p-8 rounded-3xl space-y-6 text-center">
+                <div class="space-y-2">
+                    <span class="text-xs text-blush-300 font-semibold uppercase tracking-wider">The Window to Your Heart</span>
+                    <h2 class="text-3xl font-serif text-blush-200">Looking Into Your Soul</h2>
+                    <p class="text-xs text-blush-200/80">When our gaze met, words became entirely unnecessary.</p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-6 my-4">
+                    <div class="photo-frame rounded-2xl overflow-hidden border-2 border-blush-400/40 max-w-xs cursor-pointer" onclick="openModal('8.jpg', 'My gaze looking back at you')">
+                        <img src="8.jpg" alt="His eyes" class="w-full h-48 object-cover">
+                        <div class="bg-black/70 py-1.5 text-xs text-blush-200">My eyes searching for you</div>
+                    </div>
+                    <div class="text-blush-300 text-2xl hidden sm:block"><i class="fas fa-heart animate-pulse"></i></div>
+                    <div class="photo-frame rounded-2xl overflow-hidden border-2 border-blush-400/40 max-w-xs cursor-pointer" onclick="openModal('9.jpg', 'Your beautiful, expressive eyes behind glasses')">
+                        <img src="9.jpg" alt="Her eyes" class="w-full h-48 object-cover">
+                        <div class="bg-black/70 py-1.5 text-xs text-blush-200">Your eyes holding my entire world</div>
+                    </div>
+                </div>
+
+                <p class="text-xs md:text-sm text-blush-100/90 leading-relaxed max-w-2xl mx-auto">
+                    They say the eyes never lie. When I look deeply into your beautiful eyes behind those glasses, I see a universe filled with warmth, innocence, purity, and a love so deep it completely overpowers me.
+                </p>
+            </div>
+        </section>
+
+        <!-- ==================== SLIDE 10: Summer Movie & Confessions (June 25) ==================== -->
+        <section class="slide" data-slide="10">
+            <div class="max-w-3xl w-full glass-card-dark p-6 md:p-10 rounded-3xl space-y-6">
+                <div class="text-center space-y-2">
+                    <span class="text-xs text-blush-300 font-semibold uppercase tracking-wider">25th June 2026</span>
+                    <h2 class="text-3xl md:text-4xl font-serif text-blush-200">First Movie & "I Like You"</h2>
+                </div>
+
+                <div class="space-y-4 text-xs md:text-sm text-blush-100/90 leading-relaxed">
+                    <p>
+                        On 25th June, we went to the movies with our group. Sitting right beside you in the dim cinema hall, secretly wrapping my arm around your waist and holding your soft fingers was pure electric perfection.
+                    </p>
+                    <p>
+                        Later that night over text, the moment we both waited for arrived. You softly confessed: <span class="text-blush-200 font-semibold italic">"I have started liking you..."</span>
+                    </p>
+                    <p>
+                        My heart stopped for a beat. After a quiet, overwhelming pause where happiness washed over me, I typed back: <span class="text-blush-200 font-semibold italic">"I like you too, Devu."</span>
+                    </p>
+                </div>
+
+                <div class="p-4 bg-gradient-to-r from-crimson-800/40 to-velvet-900/40 border border-blush-400/30 rounded-2xl text-center">
+                    <p class="font-handwriting text-2xl text-blush-200">
+                        "From cold, dry texts to confessing our feelings... destiny was weaving our souls into one."
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SLIDE 11: The Sacred Inscription on My Palm (Image 10) ==================== -->
+        <section class="slide" data-slide="11">
+            <div class="max-w-4xl w-full glass-card-dark p-6 md:p-8 rounded-3xl space-y-6">
+                <div class="text-center space-y-2">
+                    <span class="text-xs text-blush-300 font-semibold uppercase tracking-wider">Marks of Love & Sacred Confession</span>
+                    <h2 class="text-3xl font-serif text-blush-200">Written on My Palm & Heart</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    <div class="flex justify-center">
+                        <div class="photo-frame rounded-xl overflow-hidden border-2 border-blush-400/40 max-w-xs cursor-pointer" onclick="openModal('10.jpg', 'DEVUUUUUUU written on palm with ink')">
+                            <img src="10.jpg" alt="Ink on palm photo" class="w-full h-64 object-cover">
+                            <div class="bg-black/70 p-2 text-center text-xs text-blush-200">*DEVUUUUUUU* Ink Transfer</div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <p class="text-xs md:text-sm text-blush-100/90 leading-relaxed">
+                            You took a pen and wrote <span class="text-blush-300 font-bold">"DEVUUUUUUU"</span> on my palm with ink. When we held our hands tightly together, that fresh ink transferred onto your palm too—a physical, sweet mark of our souls uniting.
+                        </p>
+                        <p class="text-xs md:text-sm text-blush-200/90 leading-relaxed">
+                            And on <span class="text-blush-300 font-semibold">25th July 2026</span>, exactly one month after liking each other, I took the leap and confessed: <span class="text-blush-200 font-bold italic">"I Love You."</span> When you whispered <span class="text-blush-200 font-bold italic">"I love you too"</span>, my entire life found its ultimate meaning.
+                        </p>
+                        <div class="p-3 bg-velvet-900/60 rounded-xl border border-blush-400/30 text-xs text-blush-200 italic">
+                            "Bound by ink on our palms, bound by love forever in our hearts."
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SLIDE 12: Breathtaking Prettiness (Image 12) ==================== -->
+        <section class="slide" data-slide="12">
+            <div class="max-w-4xl w-full glass-card-dark p-6 md:p-8 rounded-3xl grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="flex justify-center">
+                    <div class="relative photo-frame rounded-2xl overflow-hidden border-4 border-blush-400/50 max-w-xs cursor-pointer" onclick="openModal('12.jpg', 'Her breathtaking mirror selfie!')">
+                        <img src="12.jpg" alt="Prettiest Devu Mirror Selfie" class="w-full h-80 object-cover">
+                        <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-3 text-center">
+                            <span class="text-xs text-blush-200 font-medium">My Flawless Queen ✨</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-crimson-600/30 text-blush-200 text-xs font-semibold border border-blush-400/30">
+                        <i class="fas fa-crown"></i> Dedicated to My Prettiest Girl
+                    </div>
+                    <h2 class="text-3xl font-serif text-blush-200">You Are Pure Perfection</h2>
+                    
+                    <p class="text-xs md:text-sm text-blush-100/90 leading-relaxed">
+                        When you clicked and sent me this mirror selfie, my jaw literally dropped! Your eyes, your delicate posture, your hair, your gorgeous style... you look so unbelievably stunning that I lost my breath.
+                    </p>
+                    
+                    <!-- Dedicated Taarif & Addressing Insecurity -->
+                    <div class="p-4 bg-gradient-to-r from-velvet-950/90 to-crimson-800/90 border border-blush-400/40 rounded-2xl space-y-2">
+                        <p class="text-xs md:text-sm text-blush-200 font-semibold flex items-center gap-1.5">
+                            <i class="fas fa-heart text-blush-300"></i> Listen to me carefully, my sweet Devu:
+                        </p>
+                        <p class="text-xs md:text-sm text-blush-100/95 leading-relaxed italic">
+                            "You sometimes worry or think you are fat—let me tell you with absolute honesty: <strong class="text-blush-300 not-italic">You are NOT fat at all! You are 100% flawless, perfectly shaped, incredibly attractive, and breathtakingly gorgeous in every single way.</strong> Every curve of yours is divine, and you are the most gorgeous woman on this entire planet!"
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SLIDE 13: Pure Passion & Soulmates Unbound (Images 11 & 13) ==================== -->
+        <section class="slide" data-slide="13">
+            <div class="max-w-4xl w-full glass-card-dark p-6 md:p-8 rounded-3xl space-y-6">
+                <div class="text-center space-y-2">
+                    <span class="text-xs text-blush-300 font-semibold uppercase tracking-wider">Unforgettable Passion & Gestures</span>
+                    <h2 class="text-3xl font-serif text-blush-200">Intimate Kisses & Birthday Sweetness</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    <div class="flex gap-3 justify-center">
+                        <div class="photo-frame rounded-xl overflow-hidden border-2 border-blush-400/40 max-w-xs cursor-pointer" onclick="openModal('11.jpg', '18th Sept - Holding her waist gently')">
+                            <img src="11.jpg" alt="18th Sept waist embrace" class="w-full h-56 object-cover">
+                            <div class="bg-black/70 p-1 text-center text-xs text-blush-200">18th Sept Embrace</div>
+                        </div>
+                        <div class="photo-frame rounded-xl overflow-hidden border-2 border-blush-400/40 max-w-xs cursor-pointer" onclick="openModal('13.jpg', 'Birthday chocolate given by Devu')">
+                            <img src="13.jpg" alt="Birthday chocolate" class="w-full h-56 object-cover">
+                            <div class="bg-black/70 p-1 text-center text-xs text-blush-200">Birthday Chocolate</div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <p class="text-xs md:text-sm text-blush-100/90 leading-relaxed">
+                            On <span class="text-blush-300 font-semibold">24th August</span>, we shared our very first lip kiss—a gentle, trembling moment where our souls merged. And on <span class="text-blush-300 font-semibold">24th September</span>, on our private cinema date, we held each other tightly, sharing passionate, deep kisses in the dim light.
+                        </p>
+                        <p class="text-xs md:text-sm text-blush-200/90 leading-relaxed">
+                            THANK YOU!! for handing me this Cadbury chocolate for your birthday—a gesture as sweet as your soul. Holding you, kissing your soft cheeks, and walking beside you through every boundary is the greatest privilege of my life.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SLIDE 14: GRAND BIRTHDAY CELEBRATION (Climax) ==================== -->
+        <section class="slide" data-slide="14">
+            <div class="max-w-4xl w-full glass-card-dark p-6 md:p-10 rounded-3xl text-center space-y-6 relative overflow-hidden my-auto">
+                
+                <div class="inline-block px-4 py-1.5 rounded-full bg-gradient-to-r from-crimson-600/30 to-blush-400/30 border border-blush-300/40 text-blush-200 text-xs font-semibold uppercase tracking-wider">
+                    🎉 The Ultimate Birthday Grand Climax 🎉
+                </div>
+
+                <h1 class="text-4xl md:text-6xl font-cursive text-blush-200 glow-text leading-tight">
+                    Happy Birthday, My Entire Universe, Devuuuuuu! 💖✨
+                </h1>
+
+                <!-- Interactive Animated Cake Component -->
+                <div class="py-4 flex flex-col items-center justify-center">
+                    <div id="cakeContainer" class="relative cursor-pointer group" onclick="blowCandles()">
+                        <!-- Cake Base SVG -->
+                        <div class="relative w-48 h-36 mx-auto flex flex-col items-center justify-end">
+                            <!-- Candle Flames -->
+                            <div id="flames" class="flex justify-center space-x-6 mb-1 z-20">
+                                <div class="w-3 h-5 bg-gradient-to-t from-blush-200 to-crimson-400 rounded-full flame-anim shadow-lg shadow-blush-300"></div>
+                                <div class="w-3 h-5 bg-gradient-to-t from-blush-200 to-crimson-400 rounded-full flame-anim shadow-lg shadow-blush-300"></div>
+                                <div class="w-3 h-5 bg-gradient-to-t from-blush-200 to-crimson-400 rounded-full flame-anim shadow-lg shadow-blush-300"></div>
+                            </div>
+                            <!-- Candle Sticks -->
+                            <div class="flex justify-center space-x-6 z-10">
+                                <div class="w-2 h-8 bg-gradient-to-b from-blush-100 to-crimson-600 rounded-t"></div>
+                                <div class="w-2 h-8 bg-gradient-to-b from-blush-200 to-crimson-700 rounded-t"></div>
+                                <div class="w-2 h-8 bg-gradient-to-b from-blush-100 to-crimson-600 rounded-t"></div>
+                            </div>
+                            <!-- Top Tier -->
+                            <div class="w-32 h-10 bg-gradient-to-r from-blush-300 via-crimson-500 to-blush-300 rounded-t-2xl border-t-2 border-white/60 shadow-md flex items-center justify-center">
+                                <span class="text-[10px] text-white font-bold uppercase tracking-widest">DEVU 💖</span>
+                            </div>
+                            <!-- Bottom Tier -->
+                            <div class="w-44 h-14 bg-gradient-to-r from-crimson-800 via-velvet-800 to-crimson-800 rounded-t-3xl border-t-2 border-blush-300/40 shadow-xl flex items-center justify-center">
+                                <span class="text-xs text-blush-100 font-serif italic">My Sweet Babieee</span>
+                            </div>
+                            <!-- Cake Plate -->
+                            <div class="w-52 h-3 bg-gradient-to-r from-blush-100 via-white to-blush-100 rounded-full shadow-2xl"></div>
+                        </div>
+                        
+                        <p id="candleInstruction" class="text-xs text-blush-200 mt-3 font-handwriting text-xl group-hover:scale-105 transition-transform">
+                            ✨ Tap the cake to blow out the candles & make a wish! ✨
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Deep Love Declaration Box -->
+                <div class="p-5 bg-gradient-to-r from-velvet-950/90 via-crimson-800/90 to-velvet-950/90 rounded-2xl border border-blush-400/40 text-xs md:text-sm text-blush-100 leading-relaxed space-y-3 font-serif">
+                    <p>
+                        "My sweet Devu, my kuchuuuu puchuuuu, my babieeeeee... Today I promise you my unconditional love for all the rest of my days. No matter what boundaries or struggles come our way, I will hold your hand, cherish your heart, adore your smile, and love you endlessly."
+                    </p>
+                    <p class="font-handwriting text-2xl text-blush-300 not-italic">
+                        Thank you for existing. Thank you for choosing me. Happy Birthday, my home! 🎂💖
+                    </p>
+                </div>
+
+                <!-- Interactive Final Wish Chest -->
+                <div class="pt-2 flex flex-wrap justify-center gap-3">
+                    <button onclick="triggerExplosiveConfetti()" class="px-6 py-3 bg-gradient-to-r from-crimson-600 via-blush-400 to-crimson-600 hover:brightness-110 text-white font-bold rounded-full shadow-lg shadow-crimson-900/70 transition-all transform hover:scale-105 text-xs flex items-center gap-2">
+                        <i class="fas fa-sparkles text-blush-200"></i>
+                        <span>Shower Birthday Fireworks & Confetti! 🎉</span>
+                    </button>
+                    <button onclick="toggleLetter('finalLetter')" class="px-6 py-3 bg-velvet-950/90 hover:bg-velvet-900/90 text-blush-200 border border-blush-400/40 font-semibold rounded-full text-xs transition-all flex items-center gap-2">
+                        <i class="fas fa-heart text-blush-300"></i>
+                        <span>Read My Final Everlasting Vow 📜</span>
+                    </button>
+                </div>
+
+                <div id="finalLetter" class="hidden mt-4 p-5 bg-black/85 rounded-2xl border border-blush-400/40 text-left text-xs font-serif text-blush-100 leading-relaxed space-y-2">
+                    <p class="font-handwriting text-2xl text-blush-300">My Eternal Vow To You, Devu:</p>
+                    <p>I vow to hold you when you are tired, to reassure you whenever you doubt yourself, to whisper how breathtaking you are every single day, and to never let go of your hand. You are my first, my last, and my forever. I love you, Devuuuuuu!</p>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Navigation Footer Bar -->
+    <footer class="fixed bottom-0 left-0 right-0 z-50 p-4 bg-velvet-950/70 backdrop-blur-md border-t border-blush-400/20 flex flex-col sm:flex-row items-center justify-between gap-3 px-6">
+        <div class="flex items-center space-x-1.5 overflow-x-auto max-w-full py-1" id="dotsContainer"></div>
+
+        <div class="flex items-center space-x-4 shrink-0">
+            <button id="prevBtn" onclick="prevSlide()" class="px-4 py-2 bg-velvet-900/70 hover:bg-velvet-800/80 text-blush-200 rounded-full border border-blush-400/30 text-xs transition-all flex items-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed">
+                <i class="fas fa-arrow-left"></i>
+                <span>Previous</span>
+            </button>
+            
+            <span id="slideCounter" class="text-xs text-blush-200 font-mono">1 / 14</span>
+
+            <button id="nextBtn" onclick="nextSlide()" class="px-5 py-2 bg-gradient-to-r from-crimson-600 to-blush-400 hover:brightness-110 text-white rounded-full text-xs font-semibold shadow-md shadow-crimson-900/50 transition-all flex items-center gap-2">
+                <span>Next</span>
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </footer>
+
+    <!-- Image Lightbox Modal -->
+    <div id="imageModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4" onclick="closeModal()">
+        <div class="relative max-w-4xl max-h-[90vh] w-full flex flex-col items-center justify-center" onclick="event.stopPropagation()">
+            <button onclick="closeModal()" class="absolute -top-10 right-0 text-white text-2xl hover:text-blush-300 transition-colors">
+                <i class="fas fa-times"></i>
+            </button>
+            <img id="modalImg" src="" alt="Enlarged view" class="max-h-[80vh] w-auto object-contain rounded-xl border-2 border-blush-400/40 shadow-2xl">
+            <p id="modalCaption" class="mt-4 text-center font-serif text-sm text-blush-200"></p>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 14;
+
+        // Interactive Single Click / Tap Emoji Burst
+        const romanticEmojis = ['💖', '✨', '🌸', '💗', '🌹', '🥰', '💕', '🌷', '💘', '❤️'];
+
+        function spawnSingleEmoji(x, y) {
+            const emojiEl = document.createElement('div');
+            emojiEl.className = 'cursor-emoji';
+            
+            // Randomly select exactly one emoji
+            const randomEmoji = romanticEmojis[Math.floor(Math.random() * romanticEmojis.length)];
+            emojiEl.innerText = randomEmoji;
+            
+            // Set initial click position
+            emojiEl.style.left = `${x}px`;
+            emojiEl.style.top = `${y}px`;
+
+            // Slight random variation in angle/drift for beauty
+            const dx = (Math.random() - 0.5) * 60;
+            const rot = (Math.random() - 0.5) * 50;
+            
+            emojiEl.style.setProperty('--dx', `${dx}px`);
+            emojiEl.style.setProperty('--rot', `${rot}deg`);
+
+            document.body.appendChild(emojiEl);
+
+            // Clean up element after animation finishes
+            setTimeout(() => {
+                if (emojiEl && emojiEl.parentNode) {
+                    emojiEl.parentNode.removeChild(emojiEl);
+                }
+            }, 1200);
+        }
+
+        // Trigger EXACTLY ONE emoji per click/tap anywhere on the screen
+        window.addEventListener('click', (e) => {
+            const x = e.clientX;
+            const y = e.clientY;
+            if (x !== undefined && y !== undefined) {
+                spawnSingleEmoji(x, y);
+            }
+        });
+
+        // Continuous Background Canvas Animation of Floating Love and Hearts
+        function initCanvas() {
+            const canvas = document.getElementById('particleCanvas');
+            const ctx = canvas.getContext('2d');
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            const particles = [];
+            const particleCount = 65; // Continuous density of hearts & light sparkles
+
+            class RomanticParticle {
+                constructor() {
+                    this.reset(true);
+                }
+
+                reset(initial = false) {
+                    this.x = Math.random() * canvas.width;
+                    this.y = initial ? Math.random() * canvas.height : canvas.height + Math.random() * 50;
+                    this.size = Math.random() * 12 + 6;
+                    this.speedY = Math.random() * 0.9 + 0.4;
+                    this.speedX = Math.random() * 0.6 - 0.3;
+                    this.opacity = Math.random() * 0.6 + 0.25;
+                    this.type = Math.random() > 0.35 ? 'heart' : 'sparkle';
+                    this.color = Math.random() > 0.5 ? '#ff4d6d' : '#ff91a4';
+                }
+
+                update() {
+                    this.y -= this.speedY;
+                    this.x += Math.sin(this.y * 0.02) * 0.5; // Smooth floating sway animation
+                    if (this.y < -30) this.reset(false);
+                }
+
+                draw() {
+                    ctx.save();
+                    ctx.globalAlpha = this.opacity;
+                    if (this.type === 'heart') {
+                        ctx.fillStyle = this.color;
+                        ctx.beginPath();
+                        const x = this.x, y = this.y, size = this.size;
+                        ctx.moveTo(x, y);
+                        ctx.bezierCurveTo(x - size / 2, y - size / 2, x - size, y + size / 3, x, y + size);
+                        ctx.bezierCurveTo(x + size, y + size / 3, x + size / 2, y - size / 2, x, y);
+                        ctx.fill();
+                    } else {
+                        ctx.fillStyle = '#ffe4e1';
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size / 4, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                    ctx.restore();
+                }
+            }
+
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new RomanticParticle());
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // Navigation Dots
+        function buildDots() {
+            const container = document.getElementById('dotsContainer');
+            container.innerHTML = '';
+            for (let i = 1; i <= totalSlides; i++) {
+                const dot = document.createElement('button');
+                dot.className = `h-2 rounded-full transition-all ${i === currentSlide ? 'bg-blush-300 w-5' : 'bg-crimson-800/80 w-2 hover:bg-blush-400/50'}`;
+                dot.onclick = () => goToSlide(i);
+                container.appendChild(dot);
+            }
+        }
+
+        function updateSlides() {
+            const slides = document.querySelectorAll('.slide');
+            slides.forEach(slide => {
+                const slideNum = parseInt(slide.getAttribute('data-slide'));
+                if (slideNum === currentSlide) {
+                    slide.classList.add('active');
+                } else {
+                    slide.classList.remove('active');
+                }
+            });
+
+            document.getElementById('slideCounter').innerText = `${currentSlide} / ${totalSlides}`;
+            document.getElementById('prevBtn').disabled = (currentSlide === 1);
+            
+            const nextBtn = document.getElementById('nextBtn');
+            if (currentSlide === totalSlides) {
+                nextBtn.innerHTML = `<span>Replay Story</span> <i class="fas fa-redo text-xs"></i>`;
+            } else {
+                nextBtn.innerHTML = `<span>Next</span> <i class="fas fa-arrow-right text-xs"></i>`;
+            }
+
+            buildDots();
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                currentSlide++;
+            } else {
+                currentSlide = 1;
+            }
+            updateSlides();
+        }
+
+        function prevSlide() {
+            if (currentSlide > 1) {
+                currentSlide--;
+                updateSlides();
+            }
+        }
+
+        function goToSlide(n) {
+            currentSlide = n;
+            updateSlides();
+        }
+
+        // Interactive Letter Toggle
+        function toggleLetter(id) {
+            const el = document.getElementById(id);
+            if (el) el.classList.toggle('hidden');
+        }
+
+        // Secret Diary Reveal
+        function revealDiarySecret() {
+            const prompt = document.getElementById('diaryPrompt');
+            const content = document.getElementById('diaryContent');
+            
+            if (content.classList.contains('hidden')) {
+                prompt.classList.add('hidden');
+                content.classList.remove('hidden');
+            } else {
+                prompt.classList.remove('hidden');
+                content.classList.add('hidden');
+            }
+        }
+
+        // Image Modal Logic
+        function openModal(src, caption) {
+            document.getElementById('modalImg').src = src;
+            document.getElementById('modalCaption').innerText = caption;
+            document.getElementById('imageModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').classList.add('hidden');
+        }
+
+        // Cake Candle Blow Interactive
+        function blowCandles() {
+            const flames = document.getElementById('flames');
+            const instruction = document.getElementById('candleInstruction');
+            if (flames) {
+                flames.style.opacity = '0';
+                flames.style.transition = 'opacity 0.8s ease';
+                instruction.innerText = '✨ Candles blown out! May all your dreams come true, Devu! 💖✨';
+                triggerExplosiveConfetti();
+            }
+        }
+
+        // Heart Burst Confetti Trigger
+        function triggerExplosiveConfetti() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 110,
+                    spread: 85,
+                    origin: { y: 0.6 }
+                });
+                setTimeout(() => {
+                    confetti({
+                        particleCount: 70,
+                        angle: 60,
+                        spread: 60,
+                        origin: { x: 0 }
+                    });
+                    confetti({
+                        particleCount: 70,
+                        angle: 120,
+                        spread: 60,
+                        origin: { x: 1 }
+                    });
+                }, 300);
+            }
+        }
+
+        // Music Player Toggle
+        const bgMusic = document.getElementById('bgMusic');
+        const musicToggle = document.getElementById('musicToggle');
+        const musicStatusText = document.getElementById('musicStatusText');
+        let isPlaying = false;
+
+        musicToggle.onclick = function() {
+            if (isPlaying) {
+                bgMusic.pause();
+                musicStatusText.innerText = "Play Music";
+                isPlaying = false;
+            } else {
+                bgMusic.play().then(() => {
+                    musicStatusText.innerText = "Pause Music";
+                    isPlaying = true;
+                }).catch(() => {
+                    musicStatusText.innerText = "Play Music";
+                });
+            }
+        };
+
+        // Keyboard Controls
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // Touch Swipe Navigation
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.getElementById('slideDeck').addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        document.getElementById('slideDeck').addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            if (touchStartX - touchEndX > 50) nextSlide();
+            if (touchEndX - touchStartX > 50) prevSlide();
+        });
+
+        window.onload = function() {
+            initCanvas();
+            updateSlides();
+        };
+    </script>
+</body>
+</html>
